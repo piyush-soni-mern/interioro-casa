@@ -48,6 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (_index) {
           if (_index == screens.length - 1) {
             showModalBottomSheet<void>(
+              isDismissible: true,
+              enableDrag: true,
               context: context,
               builder: (BuildContext context) {
                 return const Menu();

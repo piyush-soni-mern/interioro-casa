@@ -1,41 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:interioro_casa/screens/design/tabbarnav.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'category.dart';
 
 class CategoryBuilder extends StatelessWidget {
   CategoryBuilder({Key? key}) : super(key: key);
 
-  Future<List<Category>> getAllCategories() async {
-    // Get docs from collection reference
-    //QuerySnapshot querySnapshot = await _categories.get();
-    List<Category> l = [];
-    // Get data from docs and convert map to List
-    //final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    return l;
-  }
-
   final CollectionReference _categories =
       FirebaseFirestore.instance.collection('categories');
 
-  Widget cardBuilder(BuildContext context, int index,Future<List<Category>> categories) {
-    List<Category> categories_list = [];
-    Category category = Category('', '');
-    categories.then((value) {category = value[index];});
-    
-    if(categories_list.isNotEmpty){
-      category = categories_list[index];
-    }
+  Widget cardBuilder(BuildContext context, int index,String url,String name) {
 
-    return category.imgsrc != ''  ? GestureDetector(
+    return GestureDetector(
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => Productsview(
-                      passedcats: categories_list,
                       selectedtabindex: index,
-                    )));
+                      category: name,
+            )));
       },
       child: Card(
           color: const Color.fromRGBO(160, 188, 194, 1),
@@ -48,12 +31,12 @@ class CategoryBuilder extends StatelessWidget {
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10.0),
                       topRight: Radius.circular(10.0)),
-                  child: Image.network(category.imgsrc)),
+                  child: Image.network(url)),
               const SizedBox(
                 height: 12.0,
               ),
               Text(
-                category.categorytype,
+                name,
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                   color: Colors.white,
@@ -62,13 +45,11 @@ class CategoryBuilder extends StatelessWidget {
               )
             ],
           )),
-    ) : const Text("No data");
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final Future<List<Category>> categories = getAllCategories();
-
     return StreamBuilder(
         stream: _categories.snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
@@ -83,12 +64,15 @@ class CategoryBuilder extends StatelessWidget {
                   crossAxisSpacing: 20.0,
                   childAspectRatio: 0.95,
                 ),
-                itemBuilder: (context, index) => cardBuilder(context, index,categories));
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
+                  return cardBuilder(context, index,documentSnapshot['cat_image'].toString(),documentSnapshot['name'].toString());
+                }
+                );
           } else {
             return const Text("Something went wrong!!");
           }
         });
   }
 
-  
 }

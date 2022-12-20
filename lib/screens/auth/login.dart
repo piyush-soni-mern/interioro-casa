@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:interioro_casa/screens/auth/signup.dart';
-import 'package:interioro_casa/screens/auth/forgotPassword.dart';
+import 'package:interioro_casa/screens/auth/forgot_password.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -8,7 +8,7 @@ import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:interioro_casa/utils.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import 'components/customIcon.dart';
+import 'components/custom_icon.dart';
 import 'package:interioro_casa/screens/menu/menu.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -65,7 +65,7 @@ class LoginWidget extends StatelessWidget {
 
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  final context;
+  final BuildContext context;
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => {FocusScope.of(context).unfocus()},
@@ -108,7 +108,7 @@ class Login extends StatelessWidget {
 
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  final context;
+  final BuildContext context;
 
   @override
   Widget build(BuildContext context) {

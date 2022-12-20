@@ -1,18 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:interioro_casa/screens/design/product_viewer.dart';
-import 'product.dart';
 
-class ProductBuilder extends StatelessWidget {
-  const ProductBuilder({ Key? key , required this.productcards }) : super(key: key);
+class ProductBuilder extends StatefulWidget {
+  const ProductBuilder({ Key? key , required this.category }) : super(key: key);
 
-  final List<Product> productcards ;
+  final String category;
 
-  Widget productCardBuilder(BuildContext context, int index){
-    final Product product = productcards[index] ;
-    
+  @override
+  State<ProductBuilder> createState() => _ProductBuilderState();
+}
+
+class _ProductBuilderState extends State<ProductBuilder> {
+
+  Widget productCardBuilder(BuildContext context,DocumentSnapshot documentSnapshot){
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const Productviewer(),));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Productviewer(documentSnapshot: documentSnapshot,),));
       },
       child: Container(
         margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
@@ -30,17 +34,24 @@ class ProductBuilder extends StatelessWidget {
                   topRight: Radius.circular(10.0),
                   bottomRight: Radius.circular(10.0),
                 ),
-                child: Image.asset(
-                  'assets/'+product.imgsrc
-                ),
+                child: Image.network(documentSnapshot['first_image']),
               ),
     
               const SizedBox(width: 10.0,),
-              Text(
-                product.description,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text(
+                      documentSnapshot['description'],
+                      maxLines: 3,
+                      softWrap: true,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                  ],
                 ),
               )
             ],
@@ -52,11 +63,25 @@ class ProductBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.fromLTRB(8.0,0.0,8.0,0.0),
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: productcards.length,
-      itemBuilder: (context, index) => productCardBuilder(context,index) );
+    final _products =
+      FirebaseFirestore.instance.collection('products');
+    return StreamBuilder(
+      stream: _products.snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+        if(streamSnapshot.hasData){
+          return ListView.builder(
+          padding: const EdgeInsets.fromLTRB(8.0,0.0,8.0,0.0),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: streamSnapshot.data!.docs.length,
+          itemBuilder: (context, index) {
+             final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
+             return productCardBuilder(context,documentSnapshot); 
+          });
+        }else{
+          return const Text("Something went wrong");
+        }
+      }
+    );
   }
 }
