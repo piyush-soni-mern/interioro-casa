@@ -13,10 +13,6 @@ class CategoryBuilder extends StatelessWidget {
     // Get data from docs and convert map to List
     //final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     return l;
-    QuerySnapshot querySnapshot = await _categories.get();
-    // Get data from docs and convert map to List
-    final allData = querySnapshot.docs.map((doc) => Category(doc['cat_image'],doc['name'])).toList();
-    return allData;
   }
 
   final CollectionReference _categories =
