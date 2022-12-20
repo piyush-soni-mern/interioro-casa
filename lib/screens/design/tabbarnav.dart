@@ -27,6 +27,7 @@ class _ProductsviewState extends State<Productsview>
               child: ProductPage(
                 title: widget.category + ' Interior Designs',
                 titledesc: 'Check out products at InteriorCasa\'s',
+                category: widget.category
               ),
             )
           ],

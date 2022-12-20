@@ -25,13 +25,19 @@ class CategoryBuilder extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ClipRRect(
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10.0),
                       topRight: Radius.circular(10.0)),
-                  child: Image.network(url)),
+                  child: Image.network(
+                    url,
+                    height: 100,
+                    fit: BoxFit.fitWidth,
+                  )
+                  ),
               const SizedBox(
                 height: 12.0,
               ),
@@ -70,7 +76,7 @@ class CategoryBuilder extends StatelessWidget {
                 }
                 );
           } else {
-            return const Text("Something went wrong!!");
+            return const CircularProgressIndicator();
           }
         });
   }

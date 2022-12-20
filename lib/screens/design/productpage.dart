@@ -6,11 +6,13 @@ class ProductPage extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.titledesc,
+      required this.category
       })
       : super(key: key);
 
   final String title;
   final String titledesc;
+  final String category;
 
 
   @override
@@ -43,7 +45,7 @@ class ProductPage extends StatelessWidget {
               height: 20.0,
             ),
             ProductBuilder(
-              category: title,
+              category: category,
             ),
           ],
         ),

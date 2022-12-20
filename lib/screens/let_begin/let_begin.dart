@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:interioro_casa/screens/let_begin/ar_product_builder.dart';
 
 class LetsBegin extends StatefulWidget {
   const LetsBegin({Key? key}) : super(key: key);
@@ -10,23 +11,15 @@ class LetsBegin extends StatefulWidget {
 class _LetsBeginState extends State<LetsBegin> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width,
-      height: size.height,
-      decoration: const BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 0.0,
-            color: Colors.pink,
-            offset: Offset(0.0,0.0),
-            spreadRadius: 0.0,
-            // blurStyle: BlurStyle.inner,
-          )
-        ]),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const[Text("Let's begin soon",style: TextStyle(fontSize: 30,color: Colors.white,fontWeight: FontWeight.bold),)],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10.0, 5.0, 5.0, 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const[
+            ArProductBuidler(),
+          ],
+        ),
       ),
     );
   }

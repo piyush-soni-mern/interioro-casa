@@ -1,19 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:interioro_casa/screens/design/product_viewer.dart';
 
-class ProductBuilder extends StatefulWidget {
-  const ProductBuilder({ Key? key , required this.category }) : super(key: key);
-
-  final String category;
+class ArProductBuidler extends StatefulWidget {
+  const ArProductBuidler({Key? key}) : super(key: key);
 
   @override
-  State<ProductBuilder> createState() => _ProductBuilderState();
+  State<ArProductBuidler> createState() => _ArProductBuidlerState();
 }
 
-class _ProductBuilderState extends State<ProductBuilder> {
+class _ArProductBuidlerState extends State<ArProductBuidler> {
 
-  Widget productCardBuilder(BuildContext context,DocumentSnapshot documentSnapshot){
+    Widget productCardBuilder(BuildContext context,DocumentSnapshot documentSnapshot){
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) => Productviewer(documentSnapshot: documentSnapshot,),));
@@ -46,7 +44,6 @@ class _ProductBuilderState extends State<ProductBuilder> {
               Expanded(
                 flex: 1,
                 child: Column(
-                  
                   children: [
                     Text(
                       documentSnapshot['title'],
@@ -74,10 +71,11 @@ class _ProductBuilderState extends State<ProductBuilder> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     final _products =
-      FirebaseFirestore.instance.collection('products').where('category',isEqualTo: widget.category.toLowerCase());
+      FirebaseFirestore.instance.collection('products').where('haveAR',isEqualTo: true);
     return StreamBuilder(
       stream: _products.snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
