@@ -13,32 +13,31 @@ class CategoryBuilder extends StatelessWidget {
     // Get data from docs and convert map to List
     //final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     return l;
+    QuerySnapshot querySnapshot = await _categories.get();
+    // Get data from docs and convert map to List
+    final allData = querySnapshot.docs.map((doc) => Category(doc['cat_image'],doc['name'])).toList();
+    return allData;
   }
 
   final CollectionReference _categories =
       FirebaseFirestore.instance.collection('categories');
 
-  final List<Category> categories = [
-    Category('scene.jpg', 'Living Room'),
-    Category('scene.jpg', 'Dining Hall'),
-    Category('scene.jpg', 'Kitchen'),
-    Category('scene.jpg', 'Master Bedroom'),
-    Category('scene.jpg', 'Wardrobe'),
-    Category('scene.jpg', 'Garage'),
-    Category('scene.jpg', 'Bathroom'),
-    Category('scene.jpg', 'Lounge'),
-  ];
+  Widget cardBuilder(BuildContext context, int index,Future<List<Category>> categories) {
+    List<Category> categories_list = [];
+    Category category = Category('', '');
+    categories.then((value) {category = value[index];});
+    
+    if(categories_list.isNotEmpty){
+      category = categories_list[index];
+    }
 
-  Widget cardBuilder(BuildContext context, int index) {
-    final category = categories[index];
-
-    return GestureDetector(
+    return category.imgsrc != ''  ? GestureDetector(
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => Productsview(
-                      passedcats: categories,
+                      passedcats: categories_list,
                       selectedtabindex: index,
                     )));
       },
@@ -53,7 +52,7 @@ class CategoryBuilder extends StatelessWidget {
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10.0),
                       topRight: Radius.circular(10.0)),
-                  child: Image.asset('assets/scene.jpg')),
+                  child: Image.network(category.imgsrc)),
               const SizedBox(
                 height: 12.0,
               ),
@@ -67,12 +66,13 @@ class CategoryBuilder extends StatelessWidget {
               )
             ],
           )),
-    );
+    ) : const Text("No data");
   }
 
   @override
   Widget build(BuildContext context) {
-    getAllCategories();
+    final Future<List<Category>> categories = getAllCategories();
+
     return StreamBuilder(
         stream: _categories.snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
@@ -87,7 +87,7 @@ class CategoryBuilder extends StatelessWidget {
                   crossAxisSpacing: 20.0,
                   childAspectRatio: 0.95,
                 ),
-                itemBuilder: (context, index) => cardBuilder(context, index));
+                itemBuilder: (context, index) => cardBuilder(context, index,categories));
           } else {
             return const Text("Something went wrong!!");
           }
