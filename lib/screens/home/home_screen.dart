@@ -7,8 +7,6 @@ import 'package:interioro_casa/screens/let_begin/let_begin.dart';
 import 'package:interioro_casa/screens/magazine/magazine.dart';
 import 'package:interioro_casa/screens/menu/menu.dart';
 
-
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -17,13 +15,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Widget> screens = [const FirstPage(),const DesignIdeas(),const LetsBegin(),const Magazine(),const Menu()];
+  List<Widget> screens = [
+    const FirstPage(),
+    const DesignIdeas(),
+    const LetsBegin(),
+    const Magazine(),
+    const Menu()
+  ];
   // int active_image = 0;
   int index = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
         title: const Text(
           "Interioro.Casa",
@@ -36,19 +39,31 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: screens[index],
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
         showSelectedLabels: true,
         showUnselectedLabels: true,
-        onTap: (_index){setState(() {
-          index = _index;
-        });},
-        items: const[
+        onTap: (_index) {
+          if (_index == screens.length - 1) {
+            showModalBottomSheet<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return const Menu();
+              },
+            );
+          } else {
+            setState(() {
+              index = _index;
+            });
+          }
+        },
+        items: const [
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.house,),
+            icon: Icon(
+              CupertinoIcons.house,
+            ),
             activeIcon: Icon(CupertinoIcons.house_fill),
             label: "Home",
           ),
@@ -60,26 +75,18 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.camera_outlined),
             activeIcon: Icon(Icons.camera),
-            label: "Let's Begin",),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.video_collection_outlined),
-            activeIcon: Icon(Icons.video_collection_rounded),
-            label: "Magazine"
+            label: "Let's Begin",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu_outlined),
-            activeIcon: Icon(Icons.menu),
-            label: "Menu"
-          ),
+              icon: Icon(Icons.video_collection_outlined),
+              activeIcon: Icon(Icons.video_collection_rounded),
+              label: "Magazine"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.menu_outlined),
+              activeIcon: Icon(Icons.menu),
+              label: "Menu"),
         ],
       ),
     );
   }
-
-
-
 }
-
-
-
-
