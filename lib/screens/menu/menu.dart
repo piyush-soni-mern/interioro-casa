@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:interioro_casa/screens/auth/login.dart';
 
 class Menu extends StatefulWidget {
   const Menu({Key? key}) : super(key: key);
@@ -10,24 +11,45 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width,
-      height: size.height,
-      decoration: const BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 0.0,
-            color: Colors.pink,
-            offset: Offset(0.0,0.0),
-            spreadRadius: 0.0,
-            // blurStyle: BlurStyle.inner,
-          )
-        ]),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const[Text("Menu Coming Soon",style: TextStyle(fontSize: 30,color: Colors.white,fontWeight: FontWeight.bold),)],
-      ),
+    return const RandomWords();
+  }
+}
+
+class RandomWords extends StatefulWidget {
+  const RandomWords({Key? key}) : super(key: key);
+
+  @override
+  State<RandomWords> createState() => _RandomWordsState();
+}
+
+class _RandomWordsState extends State<RandomWords> {
+  final _suggestions = <String>["login", "register", "about", "contact"];
+  final _biggerFont = const TextStyle(fontSize: 18);
+  // #enddocregion RWS-var
+
+  // #docregion RWS-build
+  @override
+  Widget build(BuildContext context) {
+    // #docregion itemBuilder
+    return ListView.builder(
+      itemCount: _suggestions.length,
+      padding: const EdgeInsets.all(16.0),
+      itemBuilder: (context, i) {
+        return ListTile(
+          onTap: () {
+            if (i == 0) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+              );
+            }
+          },
+          title: Text(
+            _suggestions[i],
+            style: _biggerFont,
+          ),
+        );
+      },
     );
   }
 }

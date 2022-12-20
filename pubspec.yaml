@@ -37,6 +37,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^2.4.0
   cloud_firestore: ^4.2.0
+  english_words: ^4.0.0
+  firebase_auth: ^4.2.1
+  flutter_facebook_auth: ^5.0.6
+  fluttericon: ^2.0.0
+  google_sign_in: ^5.4.2
+  simple_gradient_text: ^1.2.4
 
 dev_dependencies:
   flutter_test:

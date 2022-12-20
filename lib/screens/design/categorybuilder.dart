@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:interioro_casa/screens/design/tabbarnav.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'category.dart';
 
@@ -9,10 +8,11 @@ class CategoryBuilder extends StatelessWidget {
 
   Future<List<Category>> getAllCategories() async {
     // Get docs from collection reference
-    QuerySnapshot querySnapshot = await _categories.get();
+    //QuerySnapshot querySnapshot = await _categories.get();
+    List<Category> l = [];
     // Get data from docs and convert map to List
-    final allData = querySnapshot.docs.map((doc) => Category(doc['cat_image'],doc['name'])).toList();
-    return allData;
+    //final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    return l;
   }
 
   final CollectionReference _categories =
